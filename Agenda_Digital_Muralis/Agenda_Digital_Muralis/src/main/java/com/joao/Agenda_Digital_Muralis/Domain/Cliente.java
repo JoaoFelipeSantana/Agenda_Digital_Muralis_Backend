@@ -1,5 +1,6 @@
 package com.joao.Agenda_Digital_Muralis.Domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joao.Agenda_Digital_Muralis.DTO.RegisterClienteDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,10 +21,14 @@ import java.util.Date;
 
 public class Cliente {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idCliente;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_cliente")
+    private int id_cliente;
     private String nome;
     private String cpf;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dt_nascimento;
 
     public Cliente(RegisterClienteDTO data) throws ParseException {
