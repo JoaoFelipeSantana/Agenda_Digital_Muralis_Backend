@@ -5,10 +5,7 @@ import com.joao.Agenda_Digital_Muralis.Domain.Cliente;
 import com.joao.Agenda_Digital_Muralis.Repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -24,5 +21,11 @@ public class ClienteController {
         Cliente newCliente = new Cliente(dados);
         clienteRepository.save(newCliente);
         return ResponseEntity.ok(dados);
+    }
+
+    @GetMapping
+    public ResponseEntity getAllClientes() {
+        var allClientes = clienteRepository.findAll();
+        return ResponseEntity.ok(allClientes);
     }
 }
