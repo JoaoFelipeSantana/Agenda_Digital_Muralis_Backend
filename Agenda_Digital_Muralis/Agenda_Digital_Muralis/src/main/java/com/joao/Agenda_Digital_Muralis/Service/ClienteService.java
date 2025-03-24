@@ -1,8 +1,13 @@
 package com.joao.Agenda_Digital_Muralis.Service;
 
 import com.joao.Agenda_Digital_Muralis.DTO.ClienteDTO;
+import com.joao.Agenda_Digital_Muralis.DTO.ClienteRegisterDTO;
 import com.joao.Agenda_Digital_Muralis.Domain.Cliente;
+import com.joao.Agenda_Digital_Muralis.Domain.ClienteEndereco;
+import com.joao.Agenda_Digital_Muralis.Domain.Endereco;
+import com.joao.Agenda_Digital_Muralis.Repositories.ClienteEnderecoRepository;
 import com.joao.Agenda_Digital_Muralis.Repositories.ClienteRepository;
+import com.joao.Agenda_Digital_Muralis.Repositories.EnderecoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +23,15 @@ public class ClienteService {
     @Autowired
     ClienteRepository clienteRepository;
 
+    @Autowired
+    EnderecoRepository enderecoRepository;
+
+    @Autowired
+    ViaCepService viaCepService;
+
+    @Autowired
+    ClienteEnderecoRepository clienteEnderecoRepository;
+
     public List<Cliente> listarTodos() {
         return clienteRepository.findAll();
     }
@@ -28,10 +42,30 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente registrarCliente(ClienteDTO clienteDTO) throws ParseException {
-        Cliente newCliente = new Cliente(clienteDTO);
+    public Cliente registrarCliente(ClienteRegisterDTO clienteRegisterDTO) throws ParseException {
 
-        return clienteRepository.save(newCliente);
+        Cliente cliente = new Cliente();
+        cliente.setNome(clienteRegisterDTO.nome());
+        cliente.setCpf(clienteRegisterDTO.cpf());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        cliente.setDt_nascimento(format.parse(clienteRegisterDTO.dt_nascimento()));
+        clienteRepository.save(cliente);
+
+        if (!clienteRegisterDTO.cep().isEmpty()) {
+            Endereco endereco = enderecoRepository.findByCep(clienteRegisterDTO.cep())
+                    .orElseGet(() -> {
+                        Endereco novoEndereco = viaCepService.buscarEndereco(clienteRegisterDTO.cep());
+                        return enderecoRepository.save(novoEndereco);
+                    });
+
+            ClienteEndereco relacao = new ClienteEndereco();
+            relacao.setCliente(cliente);
+            relacao.setEndereco(endereco);
+            relacao.setNumero(clienteRegisterDTO.numeroResidencia());
+            clienteEnderecoRepository.save(relacao);
+        }
+        return cliente;
     }
 
     @Transactional
