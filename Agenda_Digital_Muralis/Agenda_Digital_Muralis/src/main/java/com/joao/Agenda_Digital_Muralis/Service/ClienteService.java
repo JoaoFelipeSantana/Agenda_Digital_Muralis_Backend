@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,7 @@ public class ClienteService {
 
     @Transactional
     public Cliente registrarCliente(ClienteRegisterDTO clienteRegisterDTO) throws ParseException {
+        validarDataNascimento(clienteRegisterDTO.dt_nascimento());
 
         Cliente cliente = new Cliente();
         cliente.setNome(clienteRegisterDTO.nome());
@@ -51,6 +53,7 @@ public class ClienteService {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         cliente.setDt_nascimento(format.parse(clienteRegisterDTO.dt_nascimento()));
+
         clienteRepository.save(cliente);
 
         if (!clienteRegisterDTO.cep().isEmpty()) {
@@ -72,6 +75,7 @@ public class ClienteService {
     @Transactional
     public Cliente atualizarCliente(int id_cliente, ClienteRegisterDTO clienteRegisterDTO) throws ParseException {
         Cliente cliente = buscarPorId(id_cliente);
+        validarDataNascimento(clienteRegisterDTO.dt_nascimento());
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -120,5 +124,15 @@ public class ClienteService {
 
     public Cliente buscarPorCpf(String cpf) {
         return clienteRepository.findByCpf(cpf);
+    }
+
+    private void validarDataNascimento(String dt_nascimento) {
+        LocalDate dataNascimento = LocalDate.parse(dt_nascimento);
+
+        LocalDate dataAtual = LocalDate.now();
+
+        if(dataNascimento.isAfter(dataAtual)) {
+            throw new RuntimeException("Data de Nascimento inválida");
+        }
     }
 }
