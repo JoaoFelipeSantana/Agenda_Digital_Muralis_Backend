@@ -1,7 +1,7 @@
 package com.joao.Agenda_Digital_Muralis.Domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.joao.Agenda_Digital_Muralis.DTO.RegisterClienteDTO;
+import com.joao.Agenda_Digital_Muralis.DTO.ClienteDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class Cliente {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dt_nascimento;
 
-    public Cliente(RegisterClienteDTO data) throws ParseException {
+    public Cliente(ClienteDTO data) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         this.nome = data.nome();
