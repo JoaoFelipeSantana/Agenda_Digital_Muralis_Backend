@@ -1,8 +1,6 @@
 package com.joao.Agenda_Digital_Muralis.Domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +15,12 @@ import lombok.Setter;
 public class Endereco {
 
     @Id
-    private int idEndereco;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_endereco")
+    private int id_endereco;
     private String cep;
     private String logadouro;
     private String bairro;
     private String cidade;
     private String estado;
-    private String pais;
 }
