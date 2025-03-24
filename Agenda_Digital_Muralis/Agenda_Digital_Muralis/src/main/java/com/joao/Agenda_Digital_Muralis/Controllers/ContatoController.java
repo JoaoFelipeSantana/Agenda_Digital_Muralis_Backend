@@ -28,4 +28,10 @@ public class ContatoController {
         return ResponseEntity.ok(contatoService.listar(id));
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Contato> updateContato(@PathVariable int id, @RequestBody ContatoDTO contatoDTO) {
+        return ResponseEntity.ok(contatoService.editarContato(id, contatoDTO));
+    }
+
 }
