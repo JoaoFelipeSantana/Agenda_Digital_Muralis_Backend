@@ -1,8 +1,6 @@
 package com.joao.Agenda_Digital_Muralis.Domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +15,17 @@ import lombok.Setter;
 public class ClienteEndereco {
 
     @Id
-    private int idClienteEndereco;
-    private int idCliente;
-    private int idEndereco;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_cliente_endereco")
+    private int id_cliente_endereco;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_endereco")
+    private Endereco endereco;
+
     private int numero;
 }
