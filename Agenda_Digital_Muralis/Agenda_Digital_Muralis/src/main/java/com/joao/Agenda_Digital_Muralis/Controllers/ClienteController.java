@@ -57,7 +57,7 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Cliente> updateCliente(@PathVariable int id, @RequestBody ClienteDTO dados) throws ParseException {
+    public ResponseEntity<Cliente> updateCliente(@PathVariable int id, @RequestBody ClienteRegisterDTO dados) throws ParseException {
         return  ResponseEntity.ok(clienteService.atualizarCliente(id, dados));
     }
 }
