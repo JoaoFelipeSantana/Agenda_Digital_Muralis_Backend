@@ -34,4 +34,11 @@ public class ContatoController {
         return ResponseEntity.ok(contatoService.editarContato(id, contatoDTO));
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deleteContato(@PathVariable int id) {
+        contatoService.deletarContato(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
