@@ -19,15 +19,11 @@ public class ContatoService {
     ContatoRepository contatoRepository;
 
     @Autowired
-    ClienteRepository clienteRepository;
-
-    @Autowired
     ClienteService clienteService;
 
     @Transactional
     public Contato registrarContato(ContatoDTO contatoDTO) {
-        Cliente cliente = clienteRepository.findById(contatoDTO.id_cliente())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        Cliente cliente = clienteService.buscarPorId(contatoDTO.id_cliente());
 
         Contato contato = new Contato();
         contato.setCliente(cliente);
@@ -42,5 +38,20 @@ public class ContatoService {
         Cliente cliente = clienteService.buscarPorId(id_cliente);
 
         return contatoRepository.findByCliente(cliente);
+    }
+
+    @Transactional
+    public Contato editarContato(int id, ContatoDTO contatoDTO) {
+        Contato contato = contatoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contato não encontrado"));
+
+        Cliente cliente = clienteService.buscarPorId(contatoDTO.id_cliente());
+
+        contato.setCliente(cliente);
+        contato.setTipo(contatoDTO.tipo());
+        contato.setValor(contatoDTO.valor());
+        contato.setObservacao(contatoDTO.observacao());
+
+        return contatoRepository.save(contato);
     }
 }
