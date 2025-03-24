@@ -1,6 +1,7 @@
 package com.joao.Agenda_Digital_Muralis.Controllers;
 
 import com.joao.Agenda_Digital_Muralis.DTO.ClienteDTO;
+import com.joao.Agenda_Digital_Muralis.DTO.ClienteRegisterDTO;
 import com.joao.Agenda_Digital_Muralis.Domain.Cliente;
 import com.joao.Agenda_Digital_Muralis.Service.ClienteService;
 import jakarta.transaction.Transactional;
@@ -22,7 +23,7 @@ public class ClienteController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Cliente> createCliente(@RequestBody ClienteDTO dados) throws ParseException {
+    public ResponseEntity<Cliente> createCliente(@RequestBody ClienteRegisterDTO dados) throws ParseException {
         return ResponseEntity.ok(clienteService.registrarCliente(dados));
     }
 
