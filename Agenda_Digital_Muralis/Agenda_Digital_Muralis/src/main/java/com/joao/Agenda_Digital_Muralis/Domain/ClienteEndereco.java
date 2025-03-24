@@ -16,7 +16,7 @@ public class ClienteEndereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_cliente_endereco")
+    @Column(name="id_cliete_endereco")
     private int id_cliente_endereco;
 
     @ManyToOne

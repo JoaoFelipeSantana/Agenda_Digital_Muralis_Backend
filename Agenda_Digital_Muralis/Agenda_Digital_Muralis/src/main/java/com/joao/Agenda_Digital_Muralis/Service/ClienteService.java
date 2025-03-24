@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -69,15 +70,42 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente atualizarCliente(int id_cliente, ClienteDTO clienteDTO) throws ParseException {
+    public Cliente atualizarCliente(int id_cliente, ClienteRegisterDTO clienteRegisterDTO) throws ParseException {
         Cliente cliente = buscarPorId(id_cliente);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        cliente.setNome(clienteDTO.nome());
-        cliente.setCpf(clienteDTO.cpf());
-        cliente.setDt_nascimento(format.parse(clienteDTO.dt_nascimento()));
-        return clienteRepository.save(cliente);
+        cliente.setNome(clienteRegisterDTO.nome());
+        cliente.setCpf(clienteRegisterDTO.cpf());
+        cliente.setDt_nascimento(format.parse(clienteRegisterDTO.dt_nascimento()));
+
+        clienteRepository.save(cliente);
+
+        if (!clienteRegisterDTO.cep().isEmpty()) {
+            Endereco endereco = enderecoRepository.findByCep(clienteRegisterDTO.cep())
+                    .orElseGet(() -> {
+                        Endereco novoEndereco = viaCepService.buscarEndereco(clienteRegisterDTO.cep());
+                        return enderecoRepository.save(novoEndereco);
+                    });
+
+            Optional<ClienteEndereco> relacao = clienteEnderecoRepository.findByCliente(cliente);
+
+            if (relacao.isEmpty()) {
+                ClienteEndereco novaRelacao = new ClienteEndereco();
+                novaRelacao.setCliente(cliente);
+                novaRelacao.setEndereco(endereco);
+                novaRelacao.setNumero(clienteRegisterDTO.numeroResidencia());
+                clienteEnderecoRepository.save(novaRelacao);
+            }
+            else {
+                ClienteEndereco clienteEndereco = relacao.get();
+
+                clienteEndereco.setEndereco(endereco);
+                clienteEndereco.setNumero(clienteRegisterDTO.numeroResidencia());
+                clienteEnderecoRepository.save(clienteEndereco);
+            }
+        }
+        return cliente;
     }
 
     @Transactional
