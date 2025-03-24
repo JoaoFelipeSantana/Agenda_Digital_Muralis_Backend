@@ -36,6 +36,17 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.buscarPorId(id));
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<Cliente> getByNomeIdCliente(@RequestParam(required = false) String nome,
+                                                      @RequestParam(required = false) String cpf) {
+        if (nome != null) {
+            return ResponseEntity.ok(clienteService.buscarPorNome(nome));
+        } else if (cpf != null) {
+            return ResponseEntity.ok(clienteService.buscarPorCpf(cpf));
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteCliente(@PathVariable int id) {
