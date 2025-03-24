@@ -31,6 +31,19 @@ public class ClienteController {
         return ResponseEntity.ok(allClientes);
     }
 
+    @GetMapping("/{id}")
+    @Transactional
+    public ResponseEntity getONECliente(@PathVariable int id) {
+        Optional<Cliente> optionalCliente = clienteRepository.findById(id);
+
+        if (optionalCliente.isPresent()) {
+            Cliente cliente = optionalCliente.get();
+
+            return ResponseEntity.ok(cliente);
+        }
+        return ResponseEntity.badRequest().body("Cliente não encontrado");
+    }
+
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteCliente(@PathVariable int id) {
@@ -42,7 +55,6 @@ public class ClienteController {
 
             return  ResponseEntity.noContent().build();
         }
-        System.out.println("Cliente não encontrado");
         return  ResponseEntity.badRequest().body("Cliente não encontrado");
     }
 }
