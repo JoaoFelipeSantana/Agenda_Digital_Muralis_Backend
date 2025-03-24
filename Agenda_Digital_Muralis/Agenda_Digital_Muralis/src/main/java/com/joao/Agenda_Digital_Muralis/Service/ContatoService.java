@@ -54,4 +54,12 @@ public class ContatoService {
 
         return contatoRepository.save(contato);
     }
+
+    @Transactional
+    public void deletarContato(int id) {
+        Contato contato = contatoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contato não encontrado"));
+
+        contatoRepository.delete(contato);
+    }
 }
