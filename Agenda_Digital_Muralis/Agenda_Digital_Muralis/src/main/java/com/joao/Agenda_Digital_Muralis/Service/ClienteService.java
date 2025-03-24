@@ -51,4 +51,12 @@ public class ClienteService {
         Cliente cliente = buscarPorId(id_cliente);
         clienteRepository.delete(cliente);
     }
+
+    public Cliente buscarPorNome(String nome) {
+        return clienteRepository.findByNome(nome);
+    }
+
+    public Cliente buscarPorCpf(String cpf) {
+        return clienteRepository.findByCpf(cpf);
+    }
 }
