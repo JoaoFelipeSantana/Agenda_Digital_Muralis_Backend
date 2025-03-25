@@ -42,7 +42,7 @@ A API segue um **CRUD** básico para gerenciamento de clientes e seus contatos.
 }
 ```
 
-### 🧑 **Cliente**  
+### 📞 **Contato**  
 | Método | Rota | Descrição |  
 |--------|------|-----------|  
 | **GET** | `/contato/{id}` | Retorna todos os contatos vinculado ao **ID** informado |  
@@ -60,7 +60,7 @@ A API segue um **CRUD** básico para gerenciamento de clientes e seus contatos.
 }
 ```
 
-##🛠 Dependências
+## 🛠 Dependências
 O projeto utiliza as seguintes dependências:
 
 - **Spring Data JPA** → Utilizado para persistência no banco de dados.
@@ -73,19 +73,19 @@ O projeto utiliza as seguintes dependências:
 
 - **Lombok** → Reduz código boilerplate.
 
-##📂 Estrutura do Projeto
+## 📂 Estrutura do Projeto
 O projeto segue a arquitetura MVC, respeitando a separação de camadas.
 
-##📌 Modelagem do Banco de Dados
+## 📌 Modelagem do Banco de Dados
 A modelagem foi baseada em uma estrutura normalizada, seguindo boas práticas. O endereço do cliente foi separado em uma entidade específica para garantir maior flexibilidade e evitar redundância de dados.
 
-##📌 Diagrama Entidade-Relacionamento (DER):
+## 📌 Diagrama Entidade-Relacionamento (DER):
 ![image](https://github.com/user-attachments/assets/0e2ab446-7b42-41ac-a031-879fe28326a9)
 
-##🚀 Instruções de Uso
+## 🚀 Instruções de Uso
 Para executar o projeto localmente, siga os passos abaixo:
 
-##📌 Requisitos:
+## 📌 Requisitos:
 - XAMPP ou outro servidor MySQL para iniciar o banco de dados.
 
 - IDE Java (IntelliJ, Eclipse, VS Code) configurada com a versão correta da JDK.
@@ -96,7 +96,7 @@ Para executar o projeto localmente, siga os passos abaixo:
 
 - Configuração do Banco → user=root e password= (sem senha por padrão).
 
-##▶️ Executando a aplicação:
+## ▶️ Executando a aplicação:
 - Inicie o servidor MySQL.
 
 - Clone o repositório:
